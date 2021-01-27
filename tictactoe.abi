@@ -4,6 +4,16 @@
     "types": [],
     "structs": [
         {
+            "name": "challenges",
+            "base": "",
+            "fields": [
+                {
+                    "name": "challenger",
+                    "type": "name"
+                }
+            ]
+        },
+        {
             "name": "close",
             "base": "",
             "fields": [
@@ -47,6 +57,11 @@
         }
     ],
     "actions": [
+        {
+            "name": "challenges",
+            "type": "challenges",
+            "ricardian_contract": ""
+        },
         {
             "name": "close",
             "type": "close",

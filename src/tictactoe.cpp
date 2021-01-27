@@ -1,4 +1,5 @@
 #include <tictactoe.hpp>
+#include <vector>
 
 ACTION tictactoe::create(const name &challenger , const name &host) {
     require_auth(host);
@@ -23,10 +24,29 @@ ACTION tictactoe::close(const name &challenger , const name &host) {
         if (gameItr->host == host && gameItr->challenger == challenger) {
             gamesTable.erase(gameItr++);
             deleted = true;
+            break;
         }
     }
     check(deleted , "game not found!");
 
 }
 
-EOSIO_DISPATCH(tictactoe, (create)(close));
+ACTION tictactoe::challenges(const name &challenger) {
+    check(has_auth(challenger) || has_auth(get_self()) , "operation not promitted!");
+
+    bool gameFounded = false;
+
+    games_table gamesTable(get_self(), get_self().value);
+    auto gmChallengerIndex = gamesTable.get_index<name("challenger")>();
+
+    for (auto gmItr = gmChallengerIndex.begin(); gmItr != gmChallengerIndex.end(); gmItr++) {
+        if (gmItr->challenger.value == challenger.value) {
+            print("Host: ", gmItr->host, " & Challenger (You): ", gmItr->challenger , "\n" );
+            gameFounded = true;
+        }
+    }
+
+    check(gameFounded, "no game in play right now!");
+}
+
+EOSIO_DISPATCH(tictactoe, (challenges)(create)(close));
