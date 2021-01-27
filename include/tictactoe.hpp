@@ -3,18 +3,21 @@
 
 using namespace eosio;
 
-CONTRACT tictactoe : public contract {
+class [[eosio::contract]] tictactoe : public contract {
     public:
         using contract::contract;
         // creating the games and make sure that host and challenger not same
         // also check player didn't have same game in same time.
-        ACTION create(const name &challenger, const name &host);
+        [[eosio::action]]
+        void create(const name &challenger, const name &host);
         // close players game after complete
-        ACTION close(const name &challenger, const name &host);
+        [[eosio::action]]
+        void close(const name &challenger, const name &host);
         // find challenger current games
-        ACTION challenges(const name &challenger);
+        [[eosio::action]]
+        void challenges(const name &challenger);
     private:
-        TABLE games {
+        struct [[eosio::table]] games {
             name host;
             name challenger;
 

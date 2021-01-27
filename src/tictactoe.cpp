@@ -1,7 +1,8 @@
 #include <tictactoe.hpp>
 #include <vector>
 
-ACTION tictactoe::create(const name &challenger , const name &host) {
+[[eosio::action]]
+void tictactoe::create(const name &challenger , const name &host) {
     require_auth(host);
     check(challenger != host ,"host and challenger can't be same!");
 
@@ -16,7 +17,8 @@ ACTION tictactoe::create(const name &challenger , const name &host) {
     });
 }
 
-ACTION tictactoe::close(const name &challenger , const name &host) {
+[[eosio::action]]
+void tictactoe::close(const name &challenger , const name &host) {
     check(has_auth(host) || has_auth(host) || has_auth(get_self()) , "you'r not promitted for this operation!");
     games_table gamesTable(get_self(), get_self().value);
     bool deleted = false;
@@ -31,7 +33,8 @@ ACTION tictactoe::close(const name &challenger , const name &host) {
 
 }
 
-ACTION tictactoe::challenges(const name &challenger) {
+[[eosio::action]]
+void tictactoe::challenges(const name &challenger) {
     check(has_auth(challenger) || has_auth(get_self()) , "operation not promitted!");
 
     bool gameFounded = false;
